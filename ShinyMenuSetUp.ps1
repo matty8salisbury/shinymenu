@@ -11,8 +11,8 @@
 <#                                                                        #>
 <#PLEASE EDIT TO CREATE YOUR PERSONALISED CREDENTIALS                     #>
 <#                                                                        #>
-$venue_name = "Matt1s_Bar"
-$venue_display_name = "Matt's Bar"
+$venue_name = "Bananaman1s_Bar_PE27_6TN"
+$venue_display_name = "Bananaman's Bar"
 $app_pswd = "mypassword"
 
 $db_username = "replaceThisUsername"
@@ -33,8 +33,8 @@ $exampleFile = @"
 #VENUE SHOULD BE THE VENUE NAME AND POSTCODE WITH ANY SPACES REPLACED BY _ AND ANY APOSTROPHES REPLACED BY 1
 #VENUE DISPLAY TITLE SHOULD EXACTLY HOW THE CUSTOMER SHOULD SEE THE NAME
 
-venue <<- "Bananaman1s_Bar_PE27_6TN"
-venueDisplayTitle <<- "Bananaman's Bar"
+venue <<- "SuperTed1s_Place_PR8_7MW"
+venueDisplayTitle <<- "SuperTed's Place"
 
 #SQL database host, port, username and password
 
