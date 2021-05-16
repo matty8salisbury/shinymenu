@@ -45,14 +45,14 @@ Sys.setenv(MY_PWD='ReplaceThisPassword')
 
 #VENUE LOGIN PASSWORD FOR PUBEND AND CHECKCLOSED APPS
 
-Sys.setenv(VenuePsWd="BetterThanSuperTed001!")
+Sys.setenv(VenuePsWd="BetterThanBananaman001!")
 "@
 
 $exampleFile | Out-File -encoding utf8 -file C:\shinymenu\venueinfo.R
 
-(Get-Content C:\shinymenu\venueinfo.R ).Replace('Bananaman1s_Bar_PE27_6TN',$venue_name) | Out-File -encoding utf8 -file C:\shinymenu\venueinfo.R
-(Get-Content C:\shinymenu\venueinfo.R ).Replace("Bananaman's Bar", $venue_display_name) | Out-File -encoding utf8 -file C:\shinymenu\venueinfo.R
-(Get-Content C:\shinymenu\venueinfo.R ).Replace("BetterThanSuperTed001!", $app_pswd) | Out-File -encoding utf8 -file C:\shinymenu\venueinfo.R
+(Get-Content C:\shinymenu\venueinfo.R ).Replace('SuperTed1s_Place_PR8_7MW',$venue_name) | Out-File -encoding utf8 -file C:\shinymenu\venueinfo.R
+(Get-Content C:\shinymenu\venueinfo.R ).Replace("SuperTed's Place", $venue_display_name) | Out-File -encoding utf8 -file C:\shinymenu\venueinfo.R
+(Get-Content C:\shinymenu\venueinfo.R ).Replace("BetterThanBananaman001!", $app_pswd) | Out-File -encoding utf8 -file C:\shinymenu\venueinfo.R
 (Get-Content C:\shinymenu\venueinfo.R ).Replace("sqlUsername", $db_username) | Out-File -encoding utf8 -file C:\shinymenu\venueinfo.R
 (Get-Content C:\shinymenu\venueinfo.R ).Replace("ReplaceThisPassword", $db_password) | Out-File -encoding utf8 -file C:\shinymenu\venueinfo.R
 
