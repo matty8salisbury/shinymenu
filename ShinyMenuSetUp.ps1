@@ -207,7 +207,7 @@ $WebToOpen1 = 'http:\\'+$elIp1.Replace('"','')+':3838'
 $WebToOpen2 = 'http:\\'+$elIp2.Replace('"','')+':3838'
 
 start $WebToOpen1
-start $WebToOpen2
+#start $WebToOpen2
 
 <###########################################################################>
 <#END OF BLOCK 2                                                           #>
