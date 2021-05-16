@@ -183,20 +183,20 @@ scp -i shinymenu_pair.pem venueinfo.R $vmDestFile1a
 
 <#15. SECURE COPY THE VENUE INFORMATION TO THE FIRST INSTANCE, WHICH WILL BE USED FOR THE ORDERAPP#>
 $vmDestFile2a = "ubuntu@"+$publicDns2+":venueinfo.R"
-$vmDestFile2a = $vmDestFile2.Replace('"','')
+$vmDestFile2a = $vmDestFile2a.Replace('"','')
 scp -i shinymenu_pair.pem venueinfo.R $vmDestFile2a
 $vmDestFile2b = "ubuntu@"+$publicDns2+":venueinfo.R"
 $vmDestFile2b = $vmDestFile2b.Replace('"','')
 scp -i shinymenu_pair.pem price_list.csv $vmDestFile2b
 
-<#16. RUN BASH SCRIPT ON FIRST VM (EC2 INSTANCE) TO SET UP VENUE END APP (PUBEND)
+<#16. RUN BASH SCRIPT ON FIRST VM (EC2 INSTANCE) TO SET UP VENUE END APP (PUBEND)#>
 
 $vmDestFile1 = "ubuntu@"+$publicDns1
 $vmDestFile1 = $vmDestFile1.Replace('"','')
 scp -i shinymenu_pair.pem pubendSetup.sh ($vmDestFile1+':pubendSetup.sh')
 ssh -i "shinymenu_pair.pem" $vmDestFile1 bash pubendSetup.sh
 
-<#13. RUN BASH SCRIPT ON SECOND VM (EC2 INSTANCE) TO SET UP VENUE END APP (ORDERAPP)
+<#13. RUN BASH SCRIPT ON SECOND VM (EC2 INSTANCE) TO SET UP VENUE END APP (ORDERAPP)#>
 
 $vmDestFile2 = "ubuntu@"+$publicDns2
 $vmDestFile2 = $vmDestFile2.Replace('"','')
