@@ -142,12 +142,12 @@ $elAlloc2 = aws ec2 describe-addresses --query 'Addresses[*].AllocationId[] | [1
 $elIp1 = aws ec2 describe-addresses --query 'Addresses[*].PublicIp[] | [0]'
 $elIp2 = aws ec2 describe-addresses --query 'Addresses[*].PublicIp[] | [1]'
 
-$publicDns1 = aws ec2 describe-instances --filters Name=instance-state-name,Values=running --query "Reservations[*].Instances[*].PublicDnsName[] | [0]"
-$publicDns2 = aws ec2 describe-instances --filters Name=instance-state-name,Values=running --query "Reservations[*].Instances[*].PublicDnsName[] | [1]"
-
-<#9. ASSOCIATE ELASTIC IPS TO INSTANCES#>
+<#9. ASSOCIATE ELASTIC IPS TO INSTANCES AND RECORD PUBLIC DNS FOR EACH INSTANCE#>
 aws ec2 associate-address --instance-id $instanceId1 --allocation-id $elAlloc1
 aws ec2 associate-address --instance-id $instanceId2 --allocation-id $elAlloc2
+
+$publicDns1 = aws ec2 describe-instances --filters Name=instance-state-name,Values=running --query "Reservations[*].Instances[*].PublicDnsName[] | [0]"
+$publicDns2 = aws ec2 describe-instances --filters Name=instance-state-name,Values=running --query "Reservations[*].Instances[*].PublicDnsName[] | [1]"
 
 <#10. CREATE A SUBNET GROUP FOR RDS#>
 
@@ -205,14 +205,14 @@ scp -i shinymenu_pair.pem price_list.csv $vmDestFile2b
 $vmDestFile1 = "ubuntu@"+$publicDns1
 $vmDestFile1 = $vmDestFile1.Replace('"','')
 scp -i shinymenu_pair.pem pubendSetup.sh ($vmDestFile1+':pubendSetup.sh')
-ssh -i -o "shinymenu_pair.pem" $vmDestFile1 bash pubendSetup.sh
+ssh -i "shinymenu_pair.pem" $vmDestFile1 bash pubendSetup.sh
 
 <#13. RUN BASH SCRIPT ON SECOND VM (EC2 INSTANCE) TO SET UP VENUE END APP (ORDERAPP)#>
 
 $vmDestFile2 = "ubuntu@"+$publicDns2
 $vmDestFile2 = $vmDestFile2.Replace('"','')
 scp -i shinymenu_pair.pem orderappSetup.sh ($vmDestFile2+':orderappSetup.sh')
-ssh -i -o "shinymenu_pair.pem" $vmDestFile2 bash orderappSetup.sh
+ssh -i "shinymenu_pair.pem" $vmDestFile2 bash orderappSetup.sh
 
 $WebToOpen1 = 'http:\\'+$elIp1.Replace('"','')+':3838'
 $WebToOpen2 = 'http:\\'+$elIp2.Replace('"','')+':3838'
