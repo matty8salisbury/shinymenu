@@ -121,8 +121,8 @@ aws ec2 run-instances --image-id ami-0194c3e07668a7e36 --count 1 --instance-type
 
 <#7C. STORE INSTANCE IDS#>
 aws ec2 wait instance-exists --filters "Name=tag:app-name, Values=cus-end"
-$instanceId1 = aws ec2 describe-instances --filters "Name=instance-state-name,Values=running" --query "Reservations[*].Instances[*].InstanceId[] | [0]"
-$instanceId2 = aws ec2 describe-instances --filters "Name=instance-state-name,Values=running" --query "Reservations[*].Instances[*].InstanceId[] | [1]"
+$instanceId1 = aws ec2 describe-instances --filters "Name=instance-state-name,Values=running, pending" --query "Reservations[*].Instances[*].InstanceId[] | [0]"
+$instanceId2 = aws ec2 describe-instances --filters "Name=instance-state-name,Values=running, pending" --query "Reservations[*].Instances[*].InstanceId[] | [1]"
 
 <#8. ALLOCATE 2 ELASTIC IP AND STORE#>
 aws ec2 allocate-address
