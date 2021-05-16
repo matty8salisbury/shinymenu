@@ -205,16 +205,20 @@ scp -i shinymenu_pair.pem price_list.csv $vmDestFile2b
 
 <#16. RUN BASH SCRIPT ON FIRST VM (EC2 INSTANCE) TO SET UP VENUE END APP (PUBEND)#>
 
+#FIRST NEED TO CONVERT DOS ENDINGS TO UNIX AS GITHUB DELIVERS BASH SCRIPTS FORMATED FOR WINDOWS
+Get-Content pubendSetup.sh -raw | % {$_ -replace "`r", ""} | Set-Content -NoNewline pubendSetupUnixEndings.sh
+Get-Content orderappSetup.sh -raw | % {$_ -replace "`r", ""} | Set-Content -NoNewline orderappSetupUnixEndings.sh
+
 $vmDestFile1 = "ubuntu@"+$publicDns1
 $vmDestFile1 = $vmDestFile1.Replace('"','')
-scp -i shinymenu_pair.pem pubendSetup.sh ($vmDestFile1+':pubendSetup.sh')
+scp -i shinymenu_pair.pem pubendSetupUnixEndings.sh ($vmDestFile1+':pubendSetup.sh')
 ssh -i "shinymenu_pair.pem" $vmDestFile1 bash pubendSetup.sh
 
 <#13. RUN BASH SCRIPT ON SECOND VM (EC2 INSTANCE) TO SET UP VENUE END APP (ORDERAPP)#>
 
 $vmDestFile2 = "ubuntu@"+$publicDns2
 $vmDestFile2 = $vmDestFile2.Replace('"','')
-scp -i shinymenu_pair.pem orderappSetup.sh ($vmDestFile2+':orderappSetup.sh')
+scp -i shinymenu_pair.pem orderappSetupUnixEndings.sh ($vmDestFile2+':orderappSetup.sh')
 ssh -i "shinymenu_pair.pem" $vmDestFile2 bash orderappSetup.sh
 
 $WebToOpen1 = 'http:\\'+$elIp1.Replace('"','')+':3838'
