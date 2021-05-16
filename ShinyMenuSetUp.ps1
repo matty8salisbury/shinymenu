@@ -119,8 +119,8 @@ aws ec2 run-instances --image-id ami-0194c3e07668a7e36 --count 1 --instance-type
     --tag-specifications 'ResourceType=instance,Tags=[{Key=app-name,Value=cus-end}]' | Out-Null
 
 <#7C. STORE INSTANCE IDS#>
-$instanceId1 = aws ec2 describe-instances  --query "Reservations[*].Instances[*].InstanceId[] | [0]"
-$instanceId2 = aws ec2 describe-instances  --query "Reservations[*].Instances[*].InstanceId[] | [1]"
+$instanceId1 = aws ec2 describe-instances --filters Name=instance-state-name,Values=running --query "Reservations[*].Instances[*].InstanceId[] | [0]"
+$instanceId2 = aws ec2 describe-instances --filters Name=instance-state-name,Values=running --query "Reservations[*].Instances[*].InstanceId[] | [1]"
 
 <#8. ALLOCATE 2 ELASTIC IP AND STORE#>
 aws ec2 allocate-address
@@ -131,8 +131,8 @@ $elAlloc2 = aws ec2 describe-addresses --query 'Addresses[*].AllocationId[] | [1
 $elIp1 = aws ec2 describe-addresses --query 'Addresses[*].PublicIp[] | [0]'
 $elIp2 = aws ec2 describe-addresses --query 'Addresses[*].PublicIp[] | [1]'
 
-$publicDns1 = aws ec2 describe-instances  --query "Reservations[*].Instances[*].PublicDnsName[] | [0]"
-$publicDns2 = aws ec2 describe-instances  --query "Reservations[*].Instances[*].PublicDnsName[] | [1]"
+$publicDns1 = aws ec2 describe-instances --filters Name=instance-state-name,Values=running --query "Reservations[*].Instances[*].PublicDnsName[] | [0]"
+$publicDns2 = aws ec2 describe-instances --filters Name=instance-state-name,Values=running --query "Reservations[*].Instances[*].PublicDnsName[] | [1]"
 
 <#9. ASSOCIATE ELASTIC IPS TO INSTANCES#>
 aws ec2 associate-address --instance-id $instanceId1 --allocation-id $elAlloc1
