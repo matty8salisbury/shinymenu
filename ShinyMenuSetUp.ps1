@@ -171,6 +171,7 @@ aws rds create-db-instance `
     --publicly-accessible | Out-Null
 
 <#12. STORE SQL ENDPOINT#>
+aws rds wait db-instance-available
 $sql_endpoint = aws rds describe-db-instances --query 'DBInstances[*].Endpoint[].Address | [0]'
 (Get-Content C:\shinymenu\venueinfo.R ).Replace("'database-2.cnmaqhhd7kkj.eu-west-2.rds.amazonaws.com'", $sql_endpoint) | Out-File -encoding utf8 -file C:\shinymenu\venueinfo.R
 
@@ -190,12 +191,12 @@ icacls.exe $path /inheritance:r
 <#14. SECURE COPY THE VENUE INFORMATION TO THE FIRST INSTANCE, WHICH WILL BE USED FOR THE PUBEND APP#>
 $vmDestFile1a = "ubuntu@"+$publicDns1+":venueinfo.R"
 $vmDestFile1a = $vmDestFile1a.Replace('"','')
-scp -i shinymenu_pair.pem venueinfo.R $vmDestFile1a
+scp -o StrictHostKeyChecking=accept-new -i shinymenu_pair.pem venueinfo.R $vmDestFile1a
 
 <#15. SECURE COPY THE VENUE INFORMATION TO THE FIRST INSTANCE, WHICH WILL BE USED FOR THE ORDERAPP#>
 $vmDestFile2a = "ubuntu@"+$publicDns2+":venueinfo.R"
 $vmDestFile2a = $vmDestFile2a.Replace('"','')
-scp -i shinymenu_pair.pem venueinfo.R $vmDestFile2a
+scp -o StrictHostKeyChecking=accept-new -i shinymenu_pair.pem venueinfo.R $vmDestFile2a
 $vmDestFile2b = "ubuntu@"+$publicDns2+":venueinfo.R"
 $vmDestFile2b = $vmDestFile2b.Replace('"','')
 scp -i shinymenu_pair.pem price_list.csv $vmDestFile2b
