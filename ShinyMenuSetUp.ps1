@@ -130,8 +130,10 @@ aws ec2 allocate-address
 
 $sb = Start-Job -ScriptBlock{
 $var1 = aws ec2 describe-addresses --query 'Addresses[*].PublicIp[] | [1]'
-while($var1 -eq 'null'){
+$var2 = $var2 = aws ec2 describe-instances --filters "Name=instance-state-name,Values=running, pending" --query "Reservations[*].Instances[*].State[].Name[] | [1]"
+while(($var1 -eq 'null') -or ($var2 -eq 'pending')){
 $var1 = aws ec2 describe-addresses --query 'Addresses[*].PublicIp[] | [1]'
+$var2 = $var2 = aws ec2 describe-instances --filters "Name=instance-state-name,Values=running, pending" --query "Reservations[*].Instances[*].State[].Name[] | [1]"
 Sleep 3
 }
 }
