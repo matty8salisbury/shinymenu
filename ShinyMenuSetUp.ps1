@@ -114,13 +114,15 @@ aws ec2 run-instances --image-id ami-0194c3e07668a7e36 --count 1 --instance-type
     --tag-specifications 'ResourceType=instance,Tags=[{Key=app-name,Value=pub-end}]' | Out-Null
 
 <#7B. CREATE INSTANCE 2, FOR CUSTOMER APP#>
+aws ec2 wait instance-exists --filters 'Name=tag:app-name, Values=pub-end'
 aws ec2 run-instances --image-id ami-0194c3e07668a7e36 --count 1 --instance-type t2.micro `
     --key-name MyKeyPair --subnet-id $subnetId4use1 `
     --tag-specifications 'ResourceType=instance,Tags=[{Key=app-name,Value=cus-end}]' | Out-Null
 
 <#7C. STORE INSTANCE IDS#>
-$instanceId1 = aws ec2 describe-instances --filters Name=instance-state-name,Values=running --query "Reservations[*].Instances[*].InstanceId[] | [0]"
-$instanceId2 = aws ec2 describe-instances --filters Name=instance-state-name,Values=running --query "Reservations[*].Instances[*].InstanceId[] | [1]"
+aws ec2 wait instance-exists --filters "Name=tag:app-name, Values=cus-end"
+$instanceId1 = aws ec2 describe-instances --filters "Name=instance-state-name,Values=running" --query "Reservations[*].Instances[*].InstanceId[] | [0]"
+$instanceId2 = aws ec2 describe-instances --filters "Name=instance-state-name,Values=running" --query "Reservations[*].Instances[*].InstanceId[] | [1]"
 
 <#8. ALLOCATE 2 ELASTIC IP AND STORE#>
 aws ec2 allocate-address
@@ -157,7 +159,7 @@ aws rds create-db-instance `
     --master-username $db_username `
     --master-user-password $db_password `
     --backup-retention-period 1 `
-    --publicly-accessible
+    --publicly-accessible | Out-Null
 
 <#12. STORE SQL ENDPOINT#>
 $sql_endpoint = aws rds describe-db-instances --query 'DBInstances[*].Endpoint[].Address | [0]'
@@ -194,14 +196,14 @@ scp -i shinymenu_pair.pem price_list.csv $vmDestFile2b
 $vmDestFile1 = "ubuntu@"+$publicDns1
 $vmDestFile1 = $vmDestFile1.Replace('"','')
 scp -i shinymenu_pair.pem pubendSetup.sh ($vmDestFile1+':pubendSetup.sh')
-ssh -i "shinymenu_pair.pem" $vmDestFile1 bash pubendSetup.sh
+ssh -i -o "shinymenu_pair.pem" $vmDestFile1 bash pubendSetup.sh
 
 <#13. RUN BASH SCRIPT ON SECOND VM (EC2 INSTANCE) TO SET UP VENUE END APP (ORDERAPP)#>
 
 $vmDestFile2 = "ubuntu@"+$publicDns2
 $vmDestFile2 = $vmDestFile2.Replace('"','')
 scp -i shinymenu_pair.pem orderappSetup.sh ($vmDestFile2+':orderappSetup.sh')
-ssh -i "shinymenu_pair.pem" $vmDestFile2 bash orderappSetup.sh
+ssh -i -o "shinymenu_pair.pem" $vmDestFile2 bash orderappSetup.sh
 
 $WebToOpen1 = 'http:\\'+$elIp1.Replace('"','')+':3838'
 $WebToOpen2 = 'http:\\'+$elIp2.Replace('"','')+':3838'
