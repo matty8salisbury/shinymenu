@@ -128,6 +128,15 @@ $instanceId2 = aws ec2 describe-instances --filters "Name=instance-state-name,Va
 aws ec2 allocate-address
 aws ec2 allocate-address
 
+$sb = Start-Job -ScriptBlock{
+$var1 = aws ec2 describe-addresses --query 'Addresses[*].PublicIp[] | [1]'
+while($var1 -eq 'null'){
+$var1 = aws ec2 describe-addresses --query 'Addresses[*].PublicIp[] | [1]'
+Sleep 3
+}
+}
+Wait-Job $sb.Name
+
 $elAlloc1 = aws ec2 describe-addresses --query 'Addresses[*].AllocationId[] | [0]'
 $elAlloc2 = aws ec2 describe-addresses --query 'Addresses[*].AllocationId[] | [1]'
 $elIp1 = aws ec2 describe-addresses --query 'Addresses[*].PublicIp[] | [0]'
