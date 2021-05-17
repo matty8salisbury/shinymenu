@@ -49,14 +49,13 @@ Sys.setenv(MY_PWD='ReplaceThisPassword')
 Sys.setenv(VenuePsWd="BetterThanBananaman001!")
 "@
 
-$exampleFile | Out-File -encoding utf8 -file C:\shinymenu\venueinfo.R
+$exampleFile | Out-File -encoding utf8 -file C:\shinymenu\venueinfoPrep.R
 
-(Get-Content C:\shinymenu\venueinfo.R ).Replace('SuperTed1s_Place_PR8_7MW',$venue_name) | Out-File -encoding utf8 -file C:\shinymenu\venueinfo.R
-(Get-Content C:\shinymenu\venueinfo.R ).Replace("SuperTed's Place", $venue_display_name) | Out-File -encoding utf8 -file C:\shinymenu\venueinfo.R
-(Get-Content C:\shinymenu\venueinfo.R ).Replace("BetterThanBananaman001!", $app_pswd) | Out-File -encoding utf8 -file C:\shinymenu\venueinfo.R
-(Get-Content C:\shinymenu\venueinfo.R ).Replace("sqlUsername", $db_username) | Out-File -encoding utf8 -file C:\shinymenu\venueinfo.R
-(Get-Content C:\shinymenu\venueinfo.R ).Replace("ReplaceThisPassword", $db_password) | Out-File -encoding utf8 -file C:\shinymenu\venueinfo.R
-Get-Content venueinfo.R -raw | % {$_ -replace "`r", ""} | Set-Content -NoNewline venueinfo.R
+(Get-Content C:\shinymenu\venueinfoPrep.R ).Replace('SuperTed1s_Place_PR8_7MW',$venue_name) | Out-File -encoding utf8 -file C:\shinymenu\venueinfoPrep.R
+(Get-Content C:\shinymenu\venueinfoPrep.R ).Replace("SuperTed's Place", $venue_display_name) | Out-File -encoding utf8 -file C:\shinymenu\venueinfoPrep.R
+(Get-Content C:\shinymenu\venueinfoPrep.R ).Replace("BetterThanBananaman001!", $app_pswd) | Out-File -encoding utf8 -file C:\shinymenu\venueinfoPrep.R
+(Get-Content C:\shinymenu\venueinfoPrep.R ).Replace("sqlUsername", $db_username) | Out-File -encoding utf8 -file C:\shinymenu\venueinfoPrep.R
+(Get-Content C:\shinymenu\venueinfoPrep.R ).Replace("ReplaceThisPassword", $db_password) | Out-File -encoding utf8 -file C:\shinymenu\venueinfoPrep.R
 
 <#3. CREATE PRICE LIST TEMPLATE - NO LONGER USED: UPLOAD TEMPLATE FROM GITHUB#>
 
@@ -177,7 +176,8 @@ aws rds create-db-instance `
 <#12. STORE SQL ENDPOINT#>
 aws rds wait db-instance-available
 $sql_endpoint = aws rds describe-db-instances --query 'DBInstances[*].Endpoint[].Address | [0]'
-(Get-Content C:\shinymenu\venueinfo.R ).Replace("'database-2.cnmaqhhd7kkj.eu-west-2.rds.amazonaws.com'", $sql_endpoint) | Out-File -encoding utf8 -file C:\shinymenu\venueinfo.R
+(Get-Content C:\shinymenu\venueinfoPrep.R ).Replace("'database-2.cnmaqhhd7kkj.eu-west-2.rds.amazonaws.com'", $sql_endpoint) | Out-File -encoding utf8 -file C:\shinymenu\venueinfoPrep.R
+Get-Content venueinfoPrep.R -raw | % {$_ -replace "`r", ""} | Set-Content -NoNewline venueinfo.R
 
 <#FINISHED WITH AWS COMMANDS AND NOW TRANSFERRING DATA TO VMS AND SETTING UP APPS ON VMS        #>
 
