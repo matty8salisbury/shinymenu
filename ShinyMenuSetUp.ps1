@@ -221,6 +221,9 @@ $vmDestFile2 = $vmDestFile2.Replace('"','')
 scp -i shinymenu_pair.pem orderappSetupUnixEndings.sh ($vmDestFile2+':orderappSetup.sh')
 ssh -i "shinymenu_pair.pem" $vmDestFile2 bash orderappSetup.sh
 
+Write-Host $vmDestFile1
+Write-Host $vmDestFile2
+
 $WebToOpen1 = 'http:\\'+$elIp1.Replace('"','')+':3838'
 $WebToOpen2 = 'http:\\'+$elIp2.Replace('"','')+':3838'
 
