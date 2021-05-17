@@ -199,7 +199,7 @@ scp -o StrictHostKeyChecking=accept-new -i shinymenu_pair.pem venueinfo.R $vmDes
 $vmDestFile2a = "ubuntu@"+$publicDns2+":venueinfo.R"
 $vmDestFile2a = $vmDestFile2a.Replace('"','')
 scp -o StrictHostKeyChecking=accept-new -i shinymenu_pair.pem venueinfo.R $vmDestFile2a
-$vmDestFile2b = "ubuntu@"+$publicDns2+":venueinfo.R"
+$vmDestFile2b = "ubuntu@"+$publicDns2+":price_list.csv"
 $vmDestFile2b = $vmDestFile2b.Replace('"','')
 scp -i shinymenu_pair.pem price_list.csv $vmDestFile2b
 
