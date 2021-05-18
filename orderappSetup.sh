@@ -26,7 +26,7 @@ sudo docker run hello-world
 sudo apt install nginx -y
 
 #3. INSTALL CERTBOT ON VM2
-sudo snap install --classic certbot -y
+sudo snap install --classic certbot
 sudo ln -s /snap/bin/certbot /usr/bin/certbot
 
 #4. CREATE DOCKER DIRECTORY AND CD INTO IT
