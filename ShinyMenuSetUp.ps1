@@ -230,6 +230,8 @@ start https://www.qr-code-generator.com/
 start $WebToOpen2
 start $WebToOpen1
 
+set-executionpolicy restricted -Force
+
 <###########################################################################>
 <#END OF BLOCK 2                                                           #>
 <###########################################################################>
