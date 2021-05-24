@@ -38,7 +38,6 @@ ssh -i "shinymenu_pair.pem" $vmDestFile1 'sudo systemctl restart nginx'
 $publicDns2 = aws ec2 describe-instances --filters Name=instance-state-name,Values=running --query "Reservations[*].Instances[*].PublicDnsName[] | [1]"
 $vmDestFile2 = "ubuntu@"+$publicDns2
 $vmDestFile2 = $vmDestFile2.Replace('"','')
-ssh -i "shinymenu_pair.pem" $vmDestFile2 'sudo snap install --classic certbot'
 ssh -i "shinymenu_pair.pem" $vmDestFile2 'sudo certbot --nginx'
 scp -i shinymenu_pair.pem CustShinymenuNginx.conf ($vmDestFile2+':CustShinymenuNginx.conf')
 ssh -i "shinymenu_pair.pem" $vmDestFile2 'sudo mv CustShinymenuNginx.conf /etc/nginx/sites-available/CustShinymenuNginx.conf'
