@@ -101,8 +101,6 @@ aws ec2 create-key-pair --key-name MyKeyPair --query 'KeyMaterial' --output text
 
 <#6. SET PORTS FOR SECURITY GROUP#>
 
-$sgId4use = aws ec2 describe-security-groups --query 'SecurityGroups[*].[GroupId][] | [0]'
-
 aws ec2 authorize-security-group-ingress --group-name default --protocol tcp --port 22 --cidr 0.0.0.0/0
 aws ec2 authorize-security-group-ingress --group-name default --protocol tcp --port 80 --cidr 0.0.0.0/0
 aws ec2 authorize-security-group-ingress --group-name default --protocol tcp --port 443 --cidr 0.0.0.0/0
@@ -166,7 +164,6 @@ aws rds create-db-instance `
     --db-instance-identifier shinymenudb `
     --allocated-storage 20 `
     --db-instance-class db.t2.micro `
-    --vpc-security-group-id $sgId4use `
     --db-subnet-group shinymenu-subnet-group `
     --master-username $db_username `
     --master-user-password $db_password `
