@@ -9,9 +9,9 @@ cd C:\shinymenu
 $venueWeb = $venue.ToLower().Replace('_', '-')
 if($venue.Length -gt 25) {$venueWeb = $venue.ToLower().Replace('_', '-').Substring(1, 25)}
 
-Write-Host('venue web address: v'+$venueWeb)
+Write-Host('venue web address: v'+$venueWeb+'.shinymenu.online')
 Write-Host(" ")
-Write-Host('customer web address: '+$venueWeb)
+Write-Host('customer web address: '+$venueWeb+'.shinymenu.online')
 
 
 $textToUse = 'v'+$venueWeb
