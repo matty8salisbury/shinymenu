@@ -26,6 +26,9 @@ cd C:\shinymenu
 <#2. CREATE VENUE INFORMATION R SCRIPT TO INPUT INTO APP AND SAVE INTO shinymenu#>
 <#ASSUMES USER HAS ALREADY SET UP REQUIRED VENUE INFORMATION, PASSWORD AND SQL USERNAME AND PASSWORD#>
 
+$securityToken = Get-Random -Minimum 1000000000 -Maximum 9999999999
+$securityToken = $securityToken.ToString()
+
 $exampleFile = @"
  
 ##SET REQUIRED PASSWORDS
@@ -47,6 +50,10 @@ Sys.setenv(MY_PWD='ReplaceThisPassword')
 #VENUE LOGIN PASSWORD FOR PUBEND AND CHECKCLOSED APPS
 
 Sys.setenv(VenuePsWd="BetterThanBananaman001!")
+
+#SET SECURITY TOKEN (ADDITIONAL INFO FOR PULLING NHS TRACK & TRACE INFO
+
+Sys.setenv(securityToken="6634553049")
 "@
 
 $exampleFile | Out-File -encoding utf8 -file C:\shinymenu\venueinfoPrep.R
@@ -56,6 +63,7 @@ $exampleFile | Out-File -encoding utf8 -file C:\shinymenu\venueinfoPrep.R
 (Get-Content C:\shinymenu\venueinfoPrep.R ).Replace("BetterThanBananaman001!", $app_pswd) | Out-File -encoding utf8 -file C:\shinymenu\venueinfoPrep.R
 (Get-Content C:\shinymenu\venueinfoPrep.R ).Replace("sqlUsername", $db_username) | Out-File -encoding utf8 -file C:\shinymenu\venueinfoPrep.R
 (Get-Content C:\shinymenu\venueinfoPrep.R ).Replace("ReplaceThisPassword", $db_password) | Out-File -encoding utf8 -file C:\shinymenu\venueinfoPrep.R
+(Get-Content C:\shinymenu\venueinfoPrep.R ).Replace("6634553049", $securityToken) | Out-File -encoding utf8 -file C:\shinymenu\venueinfoPrep.R
 
 <#3. CREATE PRICE LIST TEMPLATE - NO LONGER USED: UPLOAD TEMPLATE FROM GITHUB#>
 
@@ -129,10 +137,10 @@ aws ec2 allocate-address
 
 $sb = Start-Job -ScriptBlock{
 $var1 = aws ec2 describe-addresses --query 'Addresses[*].PublicIp[] | [1]'
-$var2 = $var2 = aws ec2 describe-instances --filters "Name=instance-state-name,Values=running, pending" --query "Reservations[*].Instances[*].State[].Name[] | [1]"
+$var2 = aws ec2 describe-instances --filters "Name=instance-state-name,Values=running, pending" --query "Reservations[*].Instances[*].State[].Name[] | [1]"
 while(($var1 -eq 'null') -or ($var2 -eq 'pending')){
 $var1 = aws ec2 describe-addresses --query 'Addresses[*].PublicIp[] | [1]'
-$var2 = $var2 = aws ec2 describe-instances --filters "Name=instance-state-name,Values=running, pending" --query "Reservations[*].Instances[*].State[].Name[] | [1]"
+$var2 = aws ec2 describe-instances --filters "Name=instance-state-name,Values=running, pending" --query "Reservations[*].Instances[*].State[].Name[] | [1]"
 Sleep 3
 }
 }
