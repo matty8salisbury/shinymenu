@@ -235,6 +235,8 @@ start https://www.qr-code-generator.com/
 start $WebToOpen2
 start $WebToOpen1
 
+Write-Host('Security Token: '+$securityToken)
+
 set-executionpolicy restricted -Force
 
 <###########################################################################>
